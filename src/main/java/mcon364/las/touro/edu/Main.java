@@ -1,20 +1,28 @@
 package mcon364.las.touro.edu;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println(getGreeting("USERNAME"));
-        System.out.println(getGreeting("NO_SUCH_VAR"));
-        processValues(List.of(
-                List.of(5, 10, 15),     // Processes completely
-                List.of(20, 0, 25),     // Finds 0, skips to next list
-                List.of(30, 35, 40),    // Processes completely
-                List.of(45, 99, 50),    // Finds 99, terminates everything
-                List.of(55, 60, 65)     // Never reached
-        ));
+        /**
+         * ### 4. In the `main` method
+         * - Call `getGreeting` twice:
+         *   - Once with `"USERNAME"`
+         *   - Once with `"NO_SUCH_VAR"`
+         * - Call `processValues` with sample data to demonstrate labeled control flow
+         */
+        getGreeting("USERNAME");
+        getGreeting("NO_SUCH_VAR");
+        List<List<Integer>> list = List.of(
+                List.of(11, 22, 33),    // Processes completely
+                List.of(44, 55, 66),    // Processes completely
+                List.of(77, 99, 88),    // Finds 99, terminates ALL processing
+                List.of(111, 222, 333)  // Never reached
+        );
+        processValues(list);
     }
 
     public static Optional<String> getUserName(String envVarName) {
@@ -23,33 +31,39 @@ public class Main {
 
     /**
      * Create a public static method `getGreeting`
-     * Calls `getUserName`
-     * Uses `var` for local variables where the type is obvious
-     * Uses a switch expression with `yield` to decide how to build the greeting based on whether the username is present
-     * Constructs the greeting using `StringBuilder`
-     *
-     * @param envVarName
-     * @return
+     * - Calls `getUserName`
+     * - Uses `var` for local variables where the type is obvious
+     * - Constructs the greeting using `StringBuilder`
+     * public static String getGreeting(String envVarName);
      */
     public static String getGreeting(String envVarName) {
         getUserName(envVarName);
         String greeting;
         StringBuilder sb = new StringBuilder();
-        switch (envVarName) {
-            case null:
-                //yield envVarName == null ? sb.append("Hello" + envVarName) : sb.append("Hello");
-        }
+        sb.append("Hello ");
+        sb.append(envVarName);
+        return sb.toString();
     }
 
+    /**
+     * ### 3. Create a public static method `processValues`
+     * Iterates over a `List<List<Integer>>`
+     * Uses a labeled `continue` to skip to the next outer list when a condition is met
+     * Uses a labeled `break` to exit processing early when a terminating condition is met
+     * Returns number of processed rows
+     *
+     * @param data
+     * @return
+     */
     public static int processValues(List<List<Integer>> data) {
         int numsProcessed = 0;
         outerLoop:
-        for (int i = 0; i < data.size(); i++) {
-            for (int j = 0; j < data.get(i).size(); j++) {
-                if (data.get(i).get(j) == 0) {
+        for (List<Integer> datum : data) {
+            for (Integer num : datum) {
+                if (num == 0) {
                     continue outerLoop;
                 }
-                if (data.get(i).get(j) == 99) {
+                if (num == 99) {
                     break outerLoop;
                 }
                 numsProcessed++;

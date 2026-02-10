@@ -9,17 +9,16 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MainTest {
 
     @Test
-    void testGetUserName(){
+    void testGetUserName() {
         assertFalse(Main.getUserName("USERNAME").isEmpty());
-        assertEquals(System.getenv("USERNAME") , Main.getUserName("USERNAME").get());
+        assertEquals(System.getenv("USERNAME"), Main.getUserName("USERNAME").get());
         assertTrue(Main.getUserName("NULL").isEmpty());
     }
 
-
     @Test
-    void testGetGreeting(){
-        assertEquals("Hello, World", Main.getGreeting("Null"));
-        assertEquals("Hello, " + System.getenv("USERNAME"), Main.getGreeting("USERNAME"));
+    void testGetGreeting() {
+        assertEquals("Hello "+System.getenv("USERNAME"), Main.getGreeting("USERNAME"));
+        assertEquals("Hello Guest", Main.getGreeting("NO_SUCH_VAR"));
     }
 
     @Test
@@ -30,7 +29,6 @@ public class MainTest {
                 List.of(30, 35, 40),    // Processes completely
                 List.of(45, 99, 50),    // Finds 99, terminates everything
                 List.of(55, 60, 65)     // Never reached
-                )
-        ));
+        )));
     }
 }

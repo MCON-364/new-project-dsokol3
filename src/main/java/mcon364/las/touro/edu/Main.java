@@ -37,11 +37,15 @@ public class Main {
      * public static String getGreeting(String envVarName);
      */
     public static String getGreeting(String envVarName) {
-        getUserName(envVarName);
+        var name = getUserName(envVarName);
         String greeting;
         StringBuilder sb = new StringBuilder();
         sb.append("Hello ");
-        sb.append(envVarName);
+        if (name.isEmpty()) {
+            sb.append("Guest");
+        } else {
+            sb.append(name.get());
+        }
         return sb.toString();
     }
 
